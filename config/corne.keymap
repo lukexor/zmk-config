@@ -45,11 +45,11 @@
 #define TOG_GAME &tog GAME
 
 // TODO
-#define RDO 0
-#define PST 0
-#define CPY 0
-#define CUT 0
-#define UND 0
+#define U_RDO 0
+#define U_PST 0
+#define U_CPY 0
+#define U_CUT 0
+#define U_UND 0
 
 #define rgb_tog &rgb_ug RGB_TOG
 
@@ -125,7 +125,7 @@
 
         nav {
             bindings = <
-                XXX       XXX       XXX       XXX       XXX          RDO        PST       CPY       CUT       UND
+                XXX       XXX       XXX       XXX       XXX          U_RDO      U_PST     U_CPY     U_CUT     U_UND
                 &kp LGUI  &kp LALT  &kp LCTL  &kp LSHFT XXX          &caps_word &kp LEFT  &kp DOWN  &kp UP    &kp RIGHT
                 TOG_GAME  XXX       XXX       XXX       XXX          &kp INS    &kp HOME  &kp PG_DN &kp PG_UP &kp END
                                     XXX       XXX       XXX          &kp RET    &kp BSPC  &kp DEL
