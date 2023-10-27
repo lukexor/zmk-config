@@ -18,8 +18,9 @@
 // Layers
 #define BASE  0
 #define GAME  1
-#define NAV   2
-#define MOUSE 3
+// TODO: Remove layer when fully trained on colemakdh
+#define QWTY  2
+#define NAV   3
 #define MEDIA 4
 #define NUM   5
 #define SYM   6
@@ -38,6 +39,17 @@
 #define ALT_I &mt RALT I
 #define GUI_O &mt RGUI O
 
+// Query home-row mod-taps
+#define ALT_S &mt LALT S
+#define CTRL_D &mt LCTRL D
+#define SFT_F &mt LSHFT F
+
+#define MEH_H &mt LC(LS(LALT)) H
+#define SFT_J &mt RSHFT J
+#define CTRL_K &mt RCTRL K
+#define ALT_L &mt RALT L
+#define GUI_SQT &mt RGUI SQT
+
 // Pinky mod-taps
 #define HYPR_Z &mt LC(LS(LA(LGUI))) Z
 #define HYPR_SLASH &mt LC(LS(LA(LGUI))) SLASH
@@ -45,14 +57,83 @@
 // Thumb layer-taps
 #define MEDIA_ESC &lt MEDIA ESC
 #define NAV_SPACE &lt NAV SPACE
-#define MOUSE_TAB &lt MOUSE TAB
 #define SYM_RET &lt SYM RET
 #define NUM_BSPC &lt NUM BSPC
 #define FN_DEL &lt FN DEL
 
 // Toggles
 #define TOG_GAME &tog GAME
-#define rgb_tog &rgb_ug RGB_TOG
+#define TOG_QWTY &tog QWTY
+
+#define TO_STR(x) #x
+
+#define U_SHFT_FN(NAME, BINDING, SHFT_BINDING) \
+/ { \
+    behaviors { \
+        NAME: NAME { \
+            compatible = "zmk,behavior-mod-morph"; \
+            label = TO_STR(NAME); \
+            #binding-cells = <0>; \
+            bindings = <BINDING>, <SHFT_BINDING>; \
+            mods = <(MOD_LSFT|MOD_RSFT)>; \
+        }; \
+    }; \
+};
+
+#define U_MACRO(NAME, ...) \
+/ { \
+    macros { \
+        NAME: NAME { \
+            label = TO_STR(MAC_ ## NAME); \
+            compatible = "zmk,behavior-macro"; \
+            #binding-cells = <0>; \
+            __VA_ARGS__ \
+        }; \
+    }; \
+};
+
+#define U_SHFT_MACRO(NAME, BINDING, SHFT_BINDING) \
+U_MACRO(NAME ## _macro, wait-ms = <0>; bindings = <SHFT_BINDING>;) \
+U_SHFT_FN(NAME, BINDING, &NAME ## _macro)
+
+// Bluetooth profile selection
+U_SHFT_MACRO(bt_sel0, &bt BT_SEL 0, &bt BT_SEL 0 &bt BT_CLR)
+U_SHFT_MACRO(bt_sel1, &bt BT_SEL 1, &bt BT_SEL 1 &bt BT_CLR)
+U_SHFT_MACRO(bt_sel2, &bt BT_SEL 2, &bt BT_SEL 2 &bt BT_CLR)
+U_SHFT_MACRO(bt_sel3, &bt BT_SEL 3, &bt BT_SEL 3 &bt BT_CLR)
+U_SHFT_MACRO(bt_sel4, &bt BT_SEL 4, &bt BT_SEL 4 &bt BT_CLR)
+
+// RGB
+#if defined (RGB_SHIFT_FNS)
+  #define U_RGB_TOG &rgb_tog RGB_TOG
+  #define U_RGB_EFF &rgb_eff RGB_EFF
+  #define U_RGB_EFR XXX
+  #define U_RGB_HUI &rgb_hui RGB_HUI
+  #define U_RGB_HUD XXX
+  #define U_RGB_SAI &rgb_sai RGB_SAI
+  #define U_RGB_SAD XXX
+  #define U_RGB_BRI &rgb_bri RGB_BRI
+  #define U_RGB_BRD XXX
+#else
+  #define U_RGB_TOG &rgb_ug RGB_TOG
+  #define U_RGB_EFF &rgb_ug RGB_EFF
+  #define U_RGB_EFR &rgb_ug RGB_EFR
+  #define U_RGB_HUI &rgb_ug RGB_HUI
+  #define U_RGB_HUD &rgb_ug RGB_HUD
+  #define U_RGB_SAI &rgb_ug RGB_SAI
+  #define U_RGB_SAD &rgb_ug RGB_SAD
+  #define U_RGB_BRI &rgb_ug RGB_BRI
+  #define U_RGB_BRD &rgb_ug RGB_BRD
+#endif
+
+#if defined (RGB_SHIFT_FNS)
+U_SHFT_FN(rgb_tog, &rgb_ug RGB_TOG, &rgb_ug RGB_OFF)
+
+U_SHFT_FN(rgb_eff, &rgb_ug RGB_EFF, &rgb_ug RGB_EFR)
+U_SHFT_FN(rgb_hui, &rgb_ug RGB_HUI, &rgb_ug RGB_HUD)
+U_SHFT_FN(rgb_sai, &rgb_ug RGB_SAI, &rgb_ug RGB_SAD)
+U_SHFT_FN(rgb_bri, &rgb_ug RGB_BRI, &rgb_ug RGB_BRD)
+#endif
 
 // Customize mod-taps
 &mt {
@@ -60,105 +141,87 @@
 };
 
 / {
-    behaviors {
-        // Enable shift to cycle RGB effect backwards
-        rgb_eff: rgb_effect {
-            compatible = "zmk,behavior-mod-morph";
-            label = "RGB_EFFECT";
-            #binding-cells = <0>;
-            bindings = <&rgb_ug RGB_EFF>, <&rgb_ug RGB_EFR>;
-            mods = <(MOD_LSFT|MOD_RSFT)>;
-        };
-        // Enable shift to decrease RGB hue
-        rgb_hue: rgb_hue {
-            compatible = "zmk,behavior-mod-morph";
-            label = "RGB_HUE";
-            #binding-cells = <0>;
-            bindings = <&rgb_ug RGB_HUI>, <&rgb_ug RGB_HUD>;
-            mods = <(MOD_LSFT|MOD_RSFT)>;
-        };
-        // Enable shift to decrease RGB saturation
-        rgb_sat: rgb_sat {
-            compatible = "zmk,behavior-mod-morph";
-            label = "RGB_SAT";
-            #binding-cells = <0>;
-            bindings = <&rgb_ug RGB_SAI>, <&rgb_ug RGB_SAD>;
-            mods = <(MOD_LSFT|MOD_RSFT)>;
-        };
-        // Enable shift to decrease RGB brightness
-        rgb_bri: rgb_bri {
-            compatible = "zmk,behavior-mod-morph";
-            label = "RGB_BRIGHTNESS";
-            #binding-cells = <0>;
-            bindings = <&rgb_ug RGB_BRI>, <&rgb_ug RGB_BRD>;
-            mods = <(MOD_LSFT|MOD_RSFT)>;
-        };
-    };
-
     keymap {
         compatible = "zmk,keymap";
 
-        default_layer {
+        base {
+            label = "base";
             bindings = <
-                &kp Q     &kp W     &kp F     &kp P     &kp B        &kp J     &kp L     &kp U     &kp Y     &kp SQT
-                GUI_A     ALT_R     CTRL_S    SFT_T     MEH_G        MEH_M     SFT_N     CTRL_E    ALT_I     GUI_O
-                HYPR_Z    &kp X     &kp C     &kp D     &kp V        &kp K     &kp H     &kp COMMA &kp DOT   HYPR_SLASH
-                                MEDIA_ESC NAV_SPACE MOUSE_TAB        SYM_RET NUM_BSPC FN_DEL
+                XXX   &kp Q     &kp W     &kp F     &kp P     &kp B        &kp J      &kp L      &kp U        &kp Y        &kp SQT    XXX
+                XXX   GUI_A     ALT_R     CTRL_S    SFT_T     MEH_G        MEH_M      SFT_N      CTRL_E       ALT_I        GUI_O      XXX
+                XXX   HYPR_Z    &kp X     &kp C     &kp D     &kp V        &kp K      &kp H      &kp COMMA    &kp DOT      HYPR_SLASH XXX
+                                        MEDIA_ESC NAV_SPACE &kp TAB        SYM_RET NUM_BSPC FN_DEL
             >;
         };
 
         // Disable mod-taps on WASD keys
         game {
+            label = "gaming";
             bindings = <
-                ___       ___       ___       ___       ___          ___       ___       ___       ___       ___
-                &kp A     &kp R     &kp S     ___       ___          ___       ___       ___       ___       ___
-                ___       ___       ___       ___       ___          ___       ___       ___       ___       ___
-                                    ___       ___       ___          ___       ___       ___
+                XXX   ___       ___       ___       ___       ___          ___        ___        ___          ___          ___        XXX
+                XXX   &kp A     &kp R     &kp S     ___       ___          ___        ___        ___          ___          ___        XXX
+                XXX   ___       ___       ___       ___       ___          ___        ___        ___          ___          ___        XXX
+                                          ___       ___       ___          ___        ___        ___
+            >;
+        };
+
+        qwerty {
+            label = "qwerty";
+            bindings = <
+                XXX   &kp Q     &kp W     &kp E     &kp R     &kp T        &kp Y      &kp U      &kp I        &kp O        &kp P      XXX
+                XXX   GUI_A     ALT_S     CTRL_D    SFT_F     MEH_G        MEH_H      SFT_J      CTRL_K       ALT_L        GUI_SQT    XXX
+                XXX   HYPR_Z    &kp X     &kp C     &kp V     &kp B        &kp N      &kp M      &kp COMMA    &kp DOT      HYPR_SLASH XXX
+                                        MEDIA_ESC NAV_SPACE &kp TAB        SYM_RET NUM_BSPC FN_DEL
             >;
         };
 
         nav {
+            label = "navigation";
             bindings = <
-                XXX       XXX       XXX       XXX       XXX          XXX        XXX       XXX       XXX       XXX
-                &kp LGUI  &kp LALT  &kp LCTRL &kp LSHFT XXX          &caps_word &kp LEFT  &kp DOWN  &kp UP    &kp RIGHT
-                TOG_GAME  XXX       XXX       XXX       XXX          &kp INS    &kp HOME  &kp PG_DN &kp PG_UP &kp END
-                                    XXX       XXX       XXX          &kp RET    &kp BSPC  &kp DEL
+                XXX   TOG_QWTY  XXX       XXX       XXX       XXX          XXX        XXX        XXX          XXX          XXX        XXX
+                XXX   &kp LGUI  &kp LALT  &kp LCTRL &kp LSHFT XXX          &caps_word &kp LEFT   &kp DOWN     &kp UP       &kp RIGHT  XXX
+                XXX   TOG_GAME  XXX       XXX       XXX       XXX          &kp INS    &kp HOME   &kp PG_DN    &kp PG_UP    &kp END    XXX
+                                          XXX       XXX       XXX          &kp RET    &kp BSPC   &kp DEL
             >;
         };
 
         media {
+            label = "media";
             bindings = <
-                XXX       XXX       XXX       XXX       XXX          rgb_tog    &rgb_eff   &rgb_hue     &rgb_sat     &rgb_bri
-                &kp LGUI  &kp LALT  &kp LCTRL &kp LSHFT XXX          XXX        &kp C_PREV &kp C_VOL_DN &kp C_VOL_UP &kp C_NEXT
-                XXX       XXX       XXX       XXX       XXX          XXX        XXX        XXX          XXX          XXX 
-                                    XXX       XXX       XXX          &kp C_STOP &kp C_PP   &kp C_MUTE
+                XXX   XXX       XXX       XXX       XXX       XXX          U_RGB_TOG  U_RGB_EFF  U_RGB_HUI    U_RGB_SAI    U_RGB_BRI  XXX
+                XXX   &kp LGUI  &kp LALT  &kp LCTRL &kp LSHFT XXX          XXX        &kp C_PREV &kp C_VOL_DN &kp C_VOL_UP &kp C_NEXT XXX
+                XXX   XXX       XXX       XXX       XXX       XXX          XXX        &bt_sel0   &bt_sel1     &bt_sel2     &bt_sel3   XXX
+                                          XXX       XXX       XXX          &kp C_STOP &kp C_PP   &kp C_MUTE
             >;
         };
 
         num {
+            label = "numbers";
             bindings = <
-                &kp LBRC  &kp N7    &kp N8    &kp N9    &kp RBRC     XXX       XXX       XXX       XXX       XXX 
-                &kp SEMI  &kp N4    &kp N5    &kp N6    &kp EQUAL    XXX       &kp RSHFT &kp RCTRL &kp RALT  &kp RGUI
-                &kp GRAVE &kp N1    &kp N2    &kp N3    &kp BSLH     XXX       XXX       XXX       XXX       XXX 
-                                    &kp DOT   &kp N0    &kp MINUS    XXX       XXX       XXX
+                XXX   &kp LBRC  &kp N7    &kp N8    &kp N9    &kp RBRC     XXX        XXX        XXX          XXX          XXX        XXX
+                XXX   &kp SEMI  &kp N4    &kp N5    &kp N6    &kp EQUAL    XXX        &kp RSHFT  &kp RCTRL    &kp RALT     &kp RGUI   XXX
+                XXX   &kp GRAVE &kp N1    &kp N2    &kp N3    &kp BSLH     XXX        XXX        XXX          XXX          XXX        XXX
+                                          &kp DOT   &kp N0    &kp MINUS    XXX        XXX        XXX
             >;
         };
 
         sym {
+            label = "symbols";
             bindings = <
-                &kp LBKT  &kp AMPS  &kp STAR  &kp LPAR  &kp RBKT     XXX       XXX       XXX       XXX       XXX 
-                &kp COLON &kp DLLR  &kp PRCNT &kp CARET &kp PLUS     XXX       &kp RSHFT &kp RCTRL &kp RALT  &kp RGUI
-                &kp TILDE &kp EXCL  &kp AT    &kp HASH  &kp PIPE     XXX       XXX       XXX       XXX       XXX 
-                                    &kp LPAR  &kp RPAR  &kp UNDER    XXX       XXX       XXX
+                XXX   &kp LBKT  &kp AMPS  &kp STAR  &kp LPAR  &kp RBKT     XXX        XXX        XXX          XXX          XXX        XXX
+                XXX   &kp COLON &kp DLLR  &kp PRCNT &kp CARET &kp PLUS     XXX        &kp RSHFT  &kp RCTRL    &kp RALT     &kp RGUI   XXX
+                XXX   &kp TILDE &kp EXCL  &kp AT    &kp HASH  &kp PIPE     XXX        XXX        XXX          XXX          XXX        XXX
+                                          &kp LPAR  &kp RPAR  &kp UNDER    XXX        XXX        XXX
             >;
         };
 
         fn {
+            label = "functions";
             bindings = <
-                &kp F12   &kp F7    &kp F8    &kp F9    &kp PSCRN    XXX       XXX       XXX       XXX       XXX
-                &kp F11   &kp F4    &kp F5    &kp F6    XXX          XXX       &kp RSHFT &kp RCTRL &kp RALT  &kp RGUI
-                &kp F10   &kp F1    &kp F2    &kp F3    XXX          XXX       XXX       XXX       XXX       XXX
-                                    &kp K_APP &kp SPACE &kp TAB      XXX       XXX       XXX
+                XXX   &kp F12   &kp F7    &kp F8    &kp F9    &kp PSCRN    XXX        XXX        XXX          XXX          XXX        XXX
+                XXX   &kp F11   &kp F4    &kp F5    &kp F6    XXX          XXX        &kp RSHFT  &kp RCTRL    &kp RALT     &kp RGUI   XXX
+                XXX   &kp F10   &kp F1    &kp F2    &kp F3    XXX          XXX        XXX        XXX          XXX          XXX        XXX
+                                          &kp K_APP &kp SPACE &kp TAB      XXX        XXX        XXX
             >;
         };
     };
