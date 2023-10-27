@@ -13,93 +13,94 @@
 #define XXX &none
 #define ___ &trans
 
-#define BASE  0
-#define GAME  1
-#define NAV   2
-#define MEDIA 3
-#define NUM   4
-#define SYM   5
-#define FN    6
+#define _BASE  0
+#define _GAME  1
+#define _NAV   2
+#define _MOUSE 3
+#define _MEDIA 4
+#define _NUM   5
+#define _SYM   6
+#define _FN    7
 
-#define GUI_A &hm LGUI A
-#define ALT_R &hm LALT R
-#define CTL_S &hm LCTL S
-#define SFT_T &hm LSHFT S
+#define GUI_A &u_mt LGUI A
+#define ALT_R &u_mt LALT R
+#define CTL_S &u_mt LCTL S
+#define SFT_T &u_mt LSHFT S
 
-#define SFT_N &hm RSHFT N
-#define CTL_E &hm RCTL E
-#define ALT_I &hm RALT I
-#define GUI_O &hm RGUI O
+#define SFT_N &u_mt RSHFT N
+#define CTL_E &u_mt RCTL E
+#define ALT_I &u_mt RALT I
+#define GUI_O &u_mt RGUI O
 
-#define HYPR_Z &hm LC(LS(LA(LG(Z))))
-#define MEH_G &hm LC(LS(LA(G)))
-#define MEH_M &hm RC(RS(RA(M)))
-#define HYPR_FSLH &hm LC(LS(LA(LG(FSLH))))
+#define HYPR_Z &u_mt LC(LS(LA(LG(Z))))
+#define MEH_G &u_mt LC(LS(LA(G)))
+#define MEH_M &u_mt RC(RS(RA(M)))
+#define HYPR_FSLH &u_mt LC(LS(LA(LG(FSLH))))
 
-#define MED_ESC &mot MEDIA ESC
-#define NAV_SPC &mot NAV SPACE
-#define SYM_RET &mot SYM RET
-#define NUM_BSPC &mot NUM BSPC
-#define FN_DEL &mot FN DEL
+#define MEDIA_ESC &u_lt MEDIA ESC
+#define NAV_SPC &u_lt NAV SPACE
+#define MOUSE_TAB &u_lt MOUSE TAB
+#define SYM_RET &u_lt SYM RET
+#define NUM_BSPC &u_lt NUM BSPC
+#define FN_DEL &u_lt FN DEL
 
-#define TOG_GAME &tog GAME
+// #define TOG_GAME &tog GAME
 
-// TODO
-#define U_RDO 0
-#define U_PST 0
-#define U_CPY 0
-#define U_CUT 0
-#define U_UND 0
+// // TODO
+// #define U_RDO 0
+// #define U_PST 0
+// #define U_CPY 0
+// #define U_CUT 0
+// #define U_UND 0
 
-#define rgb_tog &rgb_ug RGB_TOG
+// #define rgb_tog &rgb_ug RGB_TOG
 
 / {
     behaviors {
-        mot: momentary_on_hold {
-            compatible = "zmk,behavior-hold-tap";
-            label = "MOMENTARY_ON_HOLD";
-            #binding-cells = <2>;
-            flavor = "hold-preferred";
-            tapping-term-ms = <200>;
-            bindings = <&mo>, <&kp>;
-        };
-        hm: homerow_mods {
+        u_mt: homerow_mods {
             compatible = "zmk,behavior-hold-tap";
             label = "HOMEROW_MODS";
             #binding-cells = <2>;
             flavor = "tap-preferred";
             tapping-term-ms = <200>;
-            quick-tap-ms = <0>;
             bindings = <&kp>, <&kp>;
         };
-        rgb_eff: rgb_effect {
-            compatible = "zmk,behavior-mod-morph";
-            label = "RGB_EFFECT";
-            #binding-cells = <0>;
-            bindings = <&rgb_ug RGB_EFF>, <&rgb_ug RGB_EFR>;
-            mods = <(MOD_LSFT|MOD_RSFT)>;
+        u_lt: momentary_on_hold {
+            compatible = "zmk,behavior-hold-tap";
+            label = "MOMENTARY_ON_HOLD";
+            #binding-cells = <2>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <200>;
+            bindings = <&mo>, <&kp>;
         };
-        rgb_hue: rgb_hue {
-            compatible = "zmk,behavior-mod-morph";
-            label = "RGB_HUE";
-            #binding-cells = <0>;
-            bindings = <&rgb_ug RGB_HUI>, <&rgb_ug RGB_HUD>;
-            mods = <(MOD_LSFT|MOD_RSFT)>;
-        };
-        rgb_sat: rgb_sat {
-            compatible = "zmk,behavior-mod-morph";
-            label = "RGB_SAT";
-            #binding-cells = <0>;
-            bindings = <&rgb_ug RGB_SAI>, <&rgb_ug RGB_SAD>;
-            mods = <(MOD_LSFT|MOD_RSFT)>;
-        };
-        rgb_bri: rgb_bri {
-            compatible = "zmk,behavior-mod-morph";
-            label = "RGB_BRIGHTNESS";
-            #binding-cells = <0>;
-            bindings = <&rgb_ug RGB_BRI>, <&rgb_ug RGB_BRD>;
-            mods = <(MOD_LSFT|MOD_RSFT)>;
-        };
+        // rgb_eff: rgb_effect {
+        //     compatible = "zmk,behavior-mod-morph";
+        //     label = "RGB_EFFECT";
+        //     #binding-cells = <0>;
+        //     bindings = <&rgb_ug RGB_EFF>, <&rgb_ug RGB_EFR>;
+        //     mods = <(MOD_LSFT|MOD_RSFT)>;
+        // };
+        // rgb_hue: rgb_hue {
+        //     compatible = "zmk,behavior-mod-morph";
+        //     label = "RGB_HUE";
+        //     #binding-cells = <0>;
+        //     bindings = <&rgb_ug RGB_HUI>, <&rgb_ug RGB_HUD>;
+        //     mods = <(MOD_LSFT|MOD_RSFT)>;
+        // };
+        // rgb_sat: rgb_sat {
+        //     compatible = "zmk,behavior-mod-morph";
+        //     label = "RGB_SAT";
+        //     #binding-cells = <0>;
+        //     bindings = <&rgb_ug RGB_SAI>, <&rgb_ug RGB_SAD>;
+        //     mods = <(MOD_LSFT|MOD_RSFT)>;
+        // };
+        // rgb_bri: rgb_bri {
+        //     compatible = "zmk,behavior-mod-morph";
+        //     label = "RGB_BRIGHTNESS";
+        //     #binding-cells = <0>;
+        //     bindings = <&rgb_ug RGB_BRI>, <&rgb_ug RGB_BRD>;
+        //     mods = <(MOD_LSFT|MOD_RSFT)>;
+        // };
     };
 
     keymap {
@@ -109,64 +110,64 @@
             bindings = <
                 &kp Q     &kp W     &kp F     &kp P     &kp B        &kp J     &kp L     &kp U     &kp Y     &kp SQT
                 GUI_A     ALT_R     CTL_S     SFT_T     MEH_G        MEH_M     SFT_N     CTL_E     ALT_I     GUI_O
-                HYPR_Z    &kp X     &kp C     &kp D     &kp V        &kp K     &kp H     &kp COMMA &kp DOT   HYPR_FSLH
-                                    MED_ESC   NAV_SPC   &kp TAB      SYM_RET   NUM_BSPC  FN_DEL
+                HYPR_Z    &kp X     &kp C     &kp D     &kp V        &kp K     &kp H     &kp COMMA &kp DOT   HYPR_SLASH
+                                MEDIA_ESC NAV_SPACE MOUSE_TAB        SYM_RET NUM_BSPC FN_DEL
             >;
         };
 
-        game {
-            bindings = <
-                ___       ___       ___       ___       ___          ___       ___       ___       ___       ___
-                &kp A     &kp R     &kp S     ___       ___          ___       ___       ___       ___       ___
-                ___       ___       ___       ___       ___          ___       ___       ___       ___       ___
-                                    ___       ___       ___          ___       ___       ___
-            >;
-        };
+        // game {
+        //     bindings = <
+        //         ___       ___       ___       ___       ___          ___       ___       ___       ___       ___
+        //         &kp A     &kp R     &kp S     ___       ___          ___       ___       ___       ___       ___
+        //         ___       ___       ___       ___       ___          ___       ___       ___       ___       ___
+        //                             ___       ___       ___          ___       ___       ___
+        //     >;
+        // };
 
-        nav {
-            bindings = <
-                XXX       XXX       XXX       XXX       XXX          U_RDO      U_PST     U_CPY     U_CUT     U_UND
-                &kp LGUI  &kp LALT  &kp LCTL  &kp LSHFT XXX          &caps_word &kp LEFT  &kp DOWN  &kp UP    &kp RIGHT
-                TOG_GAME  XXX       XXX       XXX       XXX          &kp INS    &kp HOME  &kp PG_DN &kp PG_UP &kp END
-                                    XXX       XXX       XXX          &kp RET    &kp BSPC  &kp DEL
-            >;
-        };
+        // nav {
+        //     bindings = <
+        //         XXX       XXX       XXX       XXX       XXX          U_RDO      U_PST     U_CPY     U_CUT     U_UND
+        //         &kp LGUI  &kp LALT  &kp LCTL  &kp LSHFT XXX          &caps_word &kp LEFT  &kp DOWN  &kp UP    &kp RIGHT
+        //         TOG_GAME  XXX       XXX       XXX       XXX          &kp INS    &kp HOME  &kp PG_DN &kp PG_UP &kp END
+        //                             XXX       XXX       XXX          &kp RET    &kp BSPC  &kp DEL
+        //     >;
+        // };
 
-        media {
-            bindings = <
-                XXX       XXX       XXX       XXX       XXX          rgb_tog    &rgb_eff   &rgb_hue     &rgb_sat     &rgb_bri
-                &kp LGUI  &kp LALT  &kp LCTL  &kp LSHFT XXX          XXX        &kp C_PREV &kp C_VOL_DN &kp C_VOL_UP &kp C_NEXT
-                XXX       XXX       XXX       XXX       XXX          XXX        XXX        XXX          XXX          XXX 
-                                    XXX       XXX       XXX          &kp C_STOP &kp C_PP   &kp C_MUTE
-            >;
-        };
+        // media {
+        //     bindings = <
+        //         XXX       XXX       XXX       XXX       XXX          rgb_tog    &rgb_eff   &rgb_hue     &rgb_sat     &rgb_bri
+        //         &kp LGUI  &kp LALT  &kp LCTL  &kp LSHFT XXX          XXX        &kp C_PREV &kp C_VOL_DN &kp C_VOL_UP &kp C_NEXT
+        //         XXX       XXX       XXX       XXX       XXX          XXX        XXX        XXX          XXX          XXX 
+        //                             XXX       XXX       XXX          &kp C_STOP &kp C_PP   &kp C_MUTE
+        //     >;
+        // };
 
-        num {
-            bindings = <
-                &kp LBRC  &kp N7    &kp N8    &kp N9    &kp RBRC     XXX       XXX       XXX       XXX       XXX 
-                &kp SEMI  &kp N4    &kp N5    &kp N6    &kp EQUAL    XXX       &kp RSHFT &kp RCTL  &kp RALT  &kp RGUI
-                &kp GRAVE &kp N1    &kp N2    &kp N3    &kp BSLH     XXX       XXX       XXX       XXX       XXX 
-                                    &kp DOT   &kp N0    &kp MINUS    XXX       XXX       XXX
-            >;
-        };
+        // num {
+        //     bindings = <
+        //         &kp LBRC  &kp N7    &kp N8    &kp N9    &kp RBRC     XXX       XXX       XXX       XXX       XXX 
+        //         &kp SEMI  &kp N4    &kp N5    &kp N6    &kp EQUAL    XXX       &kp RSHFT &kp RCTL  &kp RALT  &kp RGUI
+        //         &kp GRAVE &kp N1    &kp N2    &kp N3    &kp BSLH     XXX       XXX       XXX       XXX       XXX 
+        //                             &kp DOT   &kp N0    &kp MINUS    XXX       XXX       XXX
+        //     >;
+        // };
 
-        sym {
-            bindings = <
-                &kp LBKT  &kp AMPS  &kp STAR  &kp LPAR  &kp RBKT     XXX       XXX       XXX       XXX       XXX 
-                &kp COLON &kp DLLR  &kp PRCNT &kp CARET &kp PLUS     XXX       &kp RSHFT &kp RCTL  &kp RALT  &kp RGUI
-                &kp TILDE &kp EXCL  &kp AT    &kp HASH  &kp PIPE     XXX       XXX       XXX       XXX       XXX 
-                                    &kp LPAR  &kp RPAR  &kp UNDER    XXX       XXX       XXX
-            >;
-        };
+        // sym {
+        //     bindings = <
+        //         &kp LBKT  &kp AMPS  &kp STAR  &kp LPAR  &kp RBKT     XXX       XXX       XXX       XXX       XXX 
+        //         &kp COLON &kp DLLR  &kp PRCNT &kp CARET &kp PLUS     XXX       &kp RSHFT &kp RCTL  &kp RALT  &kp RGUI
+        //         &kp TILDE &kp EXCL  &kp AT    &kp HASH  &kp PIPE     XXX       XXX       XXX       XXX       XXX 
+        //                             &kp LPAR  &kp RPAR  &kp UNDER    XXX       XXX       XXX
+        //     >;
+        // };
 
-        fn {
-            bindings = <
-                &kp F12   &kp F7    &kp F8    &kp F9    &kp PSCRN    XXX       XXX       XXX       XXX       XXX
-                &kp F11   &kp F4    &kp F5    &kp F6    XXX          XXX       &kp RSHFT &kp RCTL  &kp RALT  &kp RGUI
-                &kp F10   &kp F1    &kp F2    &kp F3    XXX          XXX       XXX       XXX       XXX       XXX
-                                    &kp K_APP &kp SPACE &kp TAB      XXX       XXX       XXX
-            >;
-        };
+        // fn {
+        //     bindings = <
+        //         &kp F12   &kp F7    &kp F8    &kp F9    &kp PSCRN    XXX       XXX       XXX       XXX       XXX
+        //         &kp F11   &kp F4    &kp F5    &kp F6    XXX          XXX       &kp RSHFT &kp RCTL  &kp RALT  &kp RGUI
+        //         &kp F10   &kp F1    &kp F2    &kp F3    XXX          XXX       XXX       XXX       XXX       XXX
+        //                             &kp K_APP &kp SPACE &kp TAB      XXX       XXX       XXX
+        //     >;
+        // };
     };
 };
 
