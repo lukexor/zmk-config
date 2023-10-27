@@ -36,11 +36,11 @@
 #define MEH_M &hm RC(RS(RA(M)))
 #define HYPR_FSLH &hm LC(LS(LA(LG(FSLH))))
 
-#define MED_ESC &mo MEDIA ESC
-#define NAV_SPC &mo NAV SPACE
-#define SYM_RET &mo SYM RET
-#define NUM_BSPC &mo NUM BSPC
-#define FN_DEL &mo FN DEL
+#define MED_ESC &mot MEDIA ESC
+#define NAV_SPC &mot NAV SPACE
+#define SYM_RET &mot SYM RET
+#define NUM_BSPC &mot NUM BSPC
+#define FN_DEL &mot FN DEL
 
 #define TOG_GAME &tog GAME
 
@@ -55,7 +55,7 @@
 
 / {
     behaviors {
-        mo: momentary_on_hold {
+        mot: momentary_on_hold {
             compatible = "zmk,behavior-hold-tap";
             label = "MOMENTARY_ON_HOLD";
             #binding-cells = <2>;
