@@ -3,206 +3,163 @@
  *
  * SPDX-License-Identifier: MIT
  */
+
 // clang-format off
 
 #include <behaviors.dtsi>
-#include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/rgb.h>
 
+// Convenience maps
 #define XXX &none
 #define ___ &trans
 
-#define _BASE  0
-#define _GAME  1
-#define _NAV   2
-#define _MOUSE 3
-#define _MEDIA 4
-#define _NUM   5
-#define _SYM   6
-#define _FN    7
+// Layers
+#define BASE  0
+#define GAME  1
+#define NAV   2
+#define MOUSE 3
+#define MEDIA 4
+#define NUM   5
+#define SYM   6
+#define FN    7
 
-#define GUI_A &u_mt LGUI A
-#define ALT_R &u_mt LALT R
-#define CTL_S &u_mt LCTL S
-#define SFT_T &u_mt LSHFT S
+// Home-row mod-taps
+#define GUI_A &mt LGUI A
+#define ALT_R &mt LALT R
+#define CTRL_S &mt LCTRL S
+#define SFT_T &mt LSHFT T
+#define MEH_G &mt LC(LS(LALT)) G
 
-#define SFT_N &u_mt RSHFT N
-#define CTL_E &u_mt RCTL E
-#define ALT_I &u_mt RALT I
-#define GUI_O &u_mt RGUI O
+#define MEH_M &mt RC(RS(RALT)) M
+#define SFT_N &mt RSHFT N
+#define CTRL_E &mt RCTRL E
+#define ALT_I &mt RALT I
+#define GUI_O &mt RGUI O
 
-#define HYPR_Z &u_mt LC(LS(LA(LG(Z))))
-#define MEH_G &u_mt LC(LS(LA(G)))
-#define MEH_M &u_mt RC(RS(RA(M)))
-#define HYPR_FSLH &u_mt LC(LS(LA(LG(FSLH))))
+// Pinky mod-taps
+#define HYPR_Z &mt LC(LS(LA(LGUI))) Z
+#define HYPR_SLASH &mt LC(LS(LA(LGUI))) SLASH
 
-#define MEDIA_ESC &u_lt MEDIA ESC
-#define NAV_SPC &u_lt NAV SPACE
-#define MOUSE_TAB &u_lt MOUSE TAB
-#define SYM_RET &u_lt SYM RET
-#define NUM_BSPC &u_lt NUM BSPC
-#define FN_DEL &u_lt FN DEL
+// Thumb layer-taps
+#define MEDIA_ESC &lt MEDIA ESC
+#define NAV_SPACE &lt NAV SPACE
+#define MOUSE_TAB &lt MOUSE TAB
+#define SYM_RET &lt SYM RET
+#define NUM_BSPC &lt NUM BSPC
+#define FN_DEL &lt FN DEL
 
-// #define TOG_GAME &tog GAME
+// Toggles
+#define TOG_GAME &tog GAME
+#define rgb_tog &rgb_ug RGB_TOG
 
-// // TODO
-// #define U_RDO 0
-// #define U_PST 0
-// #define U_CPY 0
-// #define U_CUT 0
-// #define U_UND 0
-
-// #define rgb_tog &rgb_ug RGB_TOG
+// Customize mod-taps
+&mt {
+    flavor = "tap-preferred";
+};
 
 / {
     behaviors {
-        u_mt: homerow_mods {
-            compatible = "zmk,behavior-hold-tap";
-            label = "HOMEROW_MODS";
-            #binding-cells = <2>;
-            flavor = "tap-preferred";
-            tapping-term-ms = <200>;
-            bindings = <&kp>, <&kp>;
+        // Enable shift to cycle RGB effect backwards
+        rgb_eff: rgb_effect {
+            compatible = "zmk,behavior-mod-morph";
+            label = "RGB_EFFECT";
+            #binding-cells = <0>;
+            bindings = <&rgb_ug RGB_EFF>, <&rgb_ug RGB_EFR>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
         };
-        u_lt: momentary_on_hold {
-            compatible = "zmk,behavior-hold-tap";
-            label = "MOMENTARY_ON_HOLD";
-            #binding-cells = <2>;
-            flavor = "tap-preferred";
-            tapping-term-ms = <200>;
-            bindings = <&mo>, <&kp>;
+        // Enable shift to decrease RGB hue
+        rgb_hue: rgb_hue {
+            compatible = "zmk,behavior-mod-morph";
+            label = "RGB_HUE";
+            #binding-cells = <0>;
+            bindings = <&rgb_ug RGB_HUI>, <&rgb_ug RGB_HUD>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
         };
-        // rgb_eff: rgb_effect {
-        //     compatible = "zmk,behavior-mod-morph";
-        //     label = "RGB_EFFECT";
-        //     #binding-cells = <0>;
-        //     bindings = <&rgb_ug RGB_EFF>, <&rgb_ug RGB_EFR>;
-        //     mods = <(MOD_LSFT|MOD_RSFT)>;
-        // };
-        // rgb_hue: rgb_hue {
-        //     compatible = "zmk,behavior-mod-morph";
-        //     label = "RGB_HUE";
-        //     #binding-cells = <0>;
-        //     bindings = <&rgb_ug RGB_HUI>, <&rgb_ug RGB_HUD>;
-        //     mods = <(MOD_LSFT|MOD_RSFT)>;
-        // };
-        // rgb_sat: rgb_sat {
-        //     compatible = "zmk,behavior-mod-morph";
-        //     label = "RGB_SAT";
-        //     #binding-cells = <0>;
-        //     bindings = <&rgb_ug RGB_SAI>, <&rgb_ug RGB_SAD>;
-        //     mods = <(MOD_LSFT|MOD_RSFT)>;
-        // };
-        // rgb_bri: rgb_bri {
-        //     compatible = "zmk,behavior-mod-morph";
-        //     label = "RGB_BRIGHTNESS";
-        //     #binding-cells = <0>;
-        //     bindings = <&rgb_ug RGB_BRI>, <&rgb_ug RGB_BRD>;
-        //     mods = <(MOD_LSFT|MOD_RSFT)>;
-        // };
+        // Enable shift to decrease RGB saturation
+        rgb_sat: rgb_sat {
+            compatible = "zmk,behavior-mod-morph";
+            label = "RGB_SAT";
+            #binding-cells = <0>;
+            bindings = <&rgb_ug RGB_SAI>, <&rgb_ug RGB_SAD>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
+        };
+        // Enable shift to decrease RGB brightness
+        rgb_bri: rgb_bri {
+            compatible = "zmk,behavior-mod-morph";
+            label = "RGB_BRIGHTNESS";
+            #binding-cells = <0>;
+            bindings = <&rgb_ug RGB_BRI>, <&rgb_ug RGB_BRD>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
+        };
     };
 
     keymap {
         compatible = "zmk,keymap";
 
-        base {
+        default_layer {
             bindings = <
                 &kp Q     &kp W     &kp F     &kp P     &kp B        &kp J     &kp L     &kp U     &kp Y     &kp SQT
-                GUI_A     ALT_R     CTL_S     SFT_T     MEH_G        MEH_M     SFT_N     CTL_E     ALT_I     GUI_O
+                GUI_A     ALT_R     CTRL_S    SFT_T     MEH_G        MEH_M     SFT_N     CTRL_E    ALT_I     GUI_O
                 HYPR_Z    &kp X     &kp C     &kp D     &kp V        &kp K     &kp H     &kp COMMA &kp DOT   HYPR_SLASH
                                 MEDIA_ESC NAV_SPACE MOUSE_TAB        SYM_RET NUM_BSPC FN_DEL
             >;
         };
 
-        // game {
-        //     bindings = <
-        //         ___       ___       ___       ___       ___          ___       ___       ___       ___       ___
-        //         &kp A     &kp R     &kp S     ___       ___          ___       ___       ___       ___       ___
-        //         ___       ___       ___       ___       ___          ___       ___       ___       ___       ___
-        //                             ___       ___       ___          ___       ___       ___
-        //     >;
-        // };
+        // Disable mod-taps on WASD keys
+        game {
+            bindings = <
+                ___       ___       ___       ___       ___          ___       ___       ___       ___       ___
+                &kp A     &kp R     &kp S     ___       ___          ___       ___       ___       ___       ___
+                ___       ___       ___       ___       ___          ___       ___       ___       ___       ___
+                                    ___       ___       ___          ___       ___       ___
+            >;
+        };
 
-        // nav {
-        //     bindings = <
-        //         XXX       XXX       XXX       XXX       XXX          U_RDO      U_PST     U_CPY     U_CUT     U_UND
-        //         &kp LGUI  &kp LALT  &kp LCTL  &kp LSHFT XXX          &caps_word &kp LEFT  &kp DOWN  &kp UP    &kp RIGHT
-        //         TOG_GAME  XXX       XXX       XXX       XXX          &kp INS    &kp HOME  &kp PG_DN &kp PG_UP &kp END
-        //                             XXX       XXX       XXX          &kp RET    &kp BSPC  &kp DEL
-        //     >;
-        // };
+        nav {
+            bindings = <
+                XXX       XXX       XXX       XXX       XXX          XXX        XXX       XXX       XXX       XXX
+                &kp LGUI  &kp LALT  &kp LCTRL &kp LSHFT XXX          &caps_word &kp LEFT  &kp DOWN  &kp UP    &kp RIGHT
+                TOG_GAME  XXX       XXX       XXX       XXX          &kp INS    &kp HOME  &kp PG_DN &kp PG_UP &kp END
+                                    XXX       XXX       XXX          &kp RET    &kp BSPC  &kp DEL
+            >;
+        };
 
-        // media {
-        //     bindings = <
-        //         XXX       XXX       XXX       XXX       XXX          rgb_tog    &rgb_eff   &rgb_hue     &rgb_sat     &rgb_bri
-        //         &kp LGUI  &kp LALT  &kp LCTL  &kp LSHFT XXX          XXX        &kp C_PREV &kp C_VOL_DN &kp C_VOL_UP &kp C_NEXT
-        //         XXX       XXX       XXX       XXX       XXX          XXX        XXX        XXX          XXX          XXX 
-        //                             XXX       XXX       XXX          &kp C_STOP &kp C_PP   &kp C_MUTE
-        //     >;
-        // };
+        media {
+            bindings = <
+                XXX       XXX       XXX       XXX       XXX          rgb_tog    &rgb_eff   &rgb_hue     &rgb_sat     &rgb_bri
+                &kp LGUI  &kp LALT  &kp LCTRL &kp LSHFT XXX          XXX        &kp C_PREV &kp C_VOL_DN &kp C_VOL_UP &kp C_NEXT
+                XXX       XXX       XXX       XXX       XXX          XXX        XXX        XXX          XXX          XXX 
+                                    XXX       XXX       XXX          &kp C_STOP &kp C_PP   &kp C_MUTE
+            >;
+        };
 
-        // num {
-        //     bindings = <
-        //         &kp LBRC  &kp N7    &kp N8    &kp N9    &kp RBRC     XXX       XXX       XXX       XXX       XXX 
-        //         &kp SEMI  &kp N4    &kp N5    &kp N6    &kp EQUAL    XXX       &kp RSHFT &kp RCTL  &kp RALT  &kp RGUI
-        //         &kp GRAVE &kp N1    &kp N2    &kp N3    &kp BSLH     XXX       XXX       XXX       XXX       XXX 
-        //                             &kp DOT   &kp N0    &kp MINUS    XXX       XXX       XXX
-        //     >;
-        // };
+        num {
+            bindings = <
+                &kp LBRC  &kp N7    &kp N8    &kp N9    &kp RBRC     XXX       XXX       XXX       XXX       XXX 
+                &kp SEMI  &kp N4    &kp N5    &kp N6    &kp EQUAL    XXX       &kp RSHFT &kp RCTRL &kp RALT  &kp RGUI
+                &kp GRAVE &kp N1    &kp N2    &kp N3    &kp BSLH     XXX       XXX       XXX       XXX       XXX 
+                                    &kp DOT   &kp N0    &kp MINUS    XXX       XXX       XXX
+            >;
+        };
 
-        // sym {
-        //     bindings = <
-        //         &kp LBKT  &kp AMPS  &kp STAR  &kp LPAR  &kp RBKT     XXX       XXX       XXX       XXX       XXX 
-        //         &kp COLON &kp DLLR  &kp PRCNT &kp CARET &kp PLUS     XXX       &kp RSHFT &kp RCTL  &kp RALT  &kp RGUI
-        //         &kp TILDE &kp EXCL  &kp AT    &kp HASH  &kp PIPE     XXX       XXX       XXX       XXX       XXX 
-        //                             &kp LPAR  &kp RPAR  &kp UNDER    XXX       XXX       XXX
-        //     >;
-        // };
+        sym {
+            bindings = <
+                &kp LBKT  &kp AMPS  &kp STAR  &kp LPAR  &kp RBKT     XXX       XXX       XXX       XXX       XXX 
+                &kp COLON &kp DLLR  &kp PRCNT &kp CARET &kp PLUS     XXX       &kp RSHFT &kp RCTRL &kp RALT  &kp RGUI
+                &kp TILDE &kp EXCL  &kp AT    &kp HASH  &kp PIPE     XXX       XXX       XXX       XXX       XXX 
+                                    &kp LPAR  &kp RPAR  &kp UNDER    XXX       XXX       XXX
+            >;
+        };
 
-        // fn {
-        //     bindings = <
-        //         &kp F12   &kp F7    &kp F8    &kp F9    &kp PSCRN    XXX       XXX       XXX       XXX       XXX
-        //         &kp F11   &kp F4    &kp F5    &kp F6    XXX          XXX       &kp RSHFT &kp RCTL  &kp RALT  &kp RGUI
-        //         &kp F10   &kp F1    &kp F2    &kp F3    XXX          XXX       XXX       XXX       XXX       XXX
-        //                             &kp K_APP &kp SPACE &kp TAB      XXX       XXX       XXX
-        //     >;
-        // };
+        fn {
+            bindings = <
+                &kp F12   &kp F7    &kp F8    &kp F9    &kp PSCRN    XXX       XXX       XXX       XXX       XXX
+                &kp F11   &kp F4    &kp F5    &kp F6    XXX          XXX       &kp RSHFT &kp RCTRL &kp RALT  &kp RGUI
+                &kp F10   &kp F1    &kp F2    &kp F3    XXX          XXX       XXX       XXX       XXX       XXX
+                                    &kp K_APP &kp SPACE &kp TAB      XXX       XXX       XXX
+            >;
+        };
     };
 };
-
-// /*
-//  * Temporarily here because nice nano v2 spi is not defined on ZMk Yet
-//  * Source: https://github.com/zmkfirmware/zmk/blob/main/app/boards/shields/reviung41/boards/nice_nano.overlay
-//  * GitHub Issue: https://github.com/zmkfirmware/zmk/issues/885
-//  */
-// #include <dt-bindings/led/led.h>
-// &spi1 {
-//     compatible = "nordic,nrf-spim";
-//     status = "okay";
-//     mosi-pin = <6>;
-//     // Unused pins, needed for SPI definition, but not used by the ws2812 driver itself.
-//     sck-pin = <5>;
-//     miso-pin = <7>;
-
-//     led_strip: ws2812@0 {
-//         compatible = "worldsemi,ws2812-spi";
-//         label = "WS2812";
-
-//         /* SPI */
-//         reg = <0>; /* ignored, but necessary for SPI bindings */
-//         spi-max-frequency = <4000000>;
-
-//         /* WS2812 */
-//         chain-length = <11>; /* arbitrary; change at will */
-//         spi-one-frame = <0x70>;
-//         spi-zero-frame = <0x40>;
-//         color-mapping = <LED_COLOR_ID_GREEN LED_COLOR_ID_RED LED_COLOR_ID_BLUE>;
-//     };
-// };
-
-// / {
-//     chosen {
-//         zmk,underglow = &led_strip;
-//     };
-// };
