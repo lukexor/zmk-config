@@ -59,7 +59,7 @@
 #define NAV_SPACE &lt NAV SPACE
 #define SYM_RET &lt SYM RET
 #define NUM_BSPC &lt NUM BSPC
-#define FN_DEL &lt FN DEL
+#define FN_REPEAT &lt FN &key_repeat
 
 // Toggles
 #define TOG_GAME &tog GAME
@@ -137,6 +137,8 @@ U_SHFT_FN(rgb_bri, &rgb_ug RGB_BRI, &rgb_ug RGB_BRD)
 
 // Customize mod-taps
 &mt {
+    retro-tap;
+    require-prior-idle-ms = <100>;
     flavor = "tap-preferred";
 };
 
@@ -150,7 +152,7 @@ U_SHFT_FN(rgb_bri, &rgb_ug RGB_BRI, &rgb_ug RGB_BRD)
                 XXX   &kp Q     &kp W     &kp F     &kp P     &kp B        &kp J      &kp L      &kp U        &kp Y        &kp SQT    XXX
                 XXX   GUI_A     ALT_R     CTRL_S    SFT_T     MEH_G        MEH_M      SFT_N      CTRL_E       ALT_I        GUI_O      XXX
                 XXX   HYPR_Z    &kp X     &kp C     &kp D     &kp V        &kp K      &kp H      &kp COMMA    &kp DOT      HYPR_SLASH XXX
-                                        MEDIA_ESC NAV_SPACE &kp TAB        SYM_RET NUM_BSPC FN_DEL
+                                        MEDIA_ESC NAV_SPACE &kp TAB        SYM_RET NUM_BSPC FN_REPEAT
             >;
         };
 
@@ -158,10 +160,10 @@ U_SHFT_FN(rgb_bri, &rgb_ug RGB_BRI, &rgb_ug RGB_BRD)
         game {
             label = "gaming";
             bindings = <
-                XXX   ___       ___       ___       ___       ___          ___        ___        ___          ___          ___        XXX
-                XXX   &kp A     &kp R     &kp S     ___       ___          ___        ___        ___          ___          ___        XXX
-                XXX   ___       ___       ___       ___       ___          ___        ___        ___          ___          ___        XXX
-                                          ___       ___       ___          ___        ___        ___
+                XXX   ___       ___       ___       ___       ___          ___        ___        ___          ___          TOG_GAME   XXX
+                XXX   &kp A     &kp R     &kp S     &kp T     ___          ___        ___        ___          ___          ___        XXX
+                XXX   &kp Z     ___       ___       ___       ___          ___        ___        ___          ___          ___        XXX
+                                          ___       &kp SPACE ___          &kp RET    ___        ___
             >;
         };
 
@@ -171,7 +173,7 @@ U_SHFT_FN(rgb_bri, &rgb_ug RGB_BRI, &rgb_ug RGB_BRD)
                 XXX   &kp Q     &kp W     &kp E     &kp R     &kp T        &kp Y      &kp U      &kp I        &kp O        &kp P      XXX
                 XXX   GUI_A     ALT_S     CTRL_D    SFT_F     MEH_G        MEH_H      SFT_J      CTRL_K       ALT_L        GUI_SQT    XXX
                 XXX   HYPR_Z    &kp X     &kp C     &kp V     &kp B        &kp N      &kp M      &kp COMMA    &kp DOT      HYPR_SLASH XXX
-                                        MEDIA_ESC NAV_SPACE &kp TAB        SYM_RET NUM_BSPC FN_DEL
+                                        MEDIA_ESC NAV_SPACE &kp TAB        SYM_RET NUM_BSPC FN_REPEAT
             >;
         };
 
