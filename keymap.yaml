@@ -1,0 +1,65 @@
+layout:
+  qmk_keyboard: corne_rotated
+  qmk_layout: LAYOUT_split_3x5_3
+layers:
+  BASE:
+    - [Q, W, F, P, B, J, L, U, Y, "'"]
+    - [
+        A,
+        R,
+        { h: "Alt", t: S },
+        { h: "Gui", t: T },
+        G,
+        M,
+        { h: "Gui", t: N },
+        { h: "Alt", t: E },
+        I,
+        O,
+      ]
+    - [Z, X, C, D, V, K, H, ",", ., /]
+    - { h: EXT, t: Esc }
+    - { h: SYM, t: "␣" }
+    - "Shift"
+    - "Ctrl"
+    - { h: NUM, t: "Bspc" }
+    - { h: FN, t: "-" }
+  EXT:
+    - [null, null, null, null, null, "Caps Word", null, null, null, null]
+    - ["Alt", "Gui", "Shift", "Ctrl", "RA", "←", "↓", "↑", "→", null]
+    - ["Undo", "Cut", "Copy", "Gui", "Paste", "⇱", "⇟", "⇞", "⇲", null]
+    - "**"
+    - null
+    - null
+    - "⇥"
+    - "⏎"
+    - Del
+  SYM:
+    - ["!", "@", { h: "Scr", t: "#" }, "$", "%", "=", "`", ":", ";", "+"]
+    - ["Alt", "Gui", "Shift", "Ctrl", "^", "*", "(", "{", "[", "-"]
+    - [null, null, "\\", "|", "&", "~", ")", "}", "]", "_"]
+    - null
+    - "**"
+    - null
+    - null
+    - null
+    - null
+  NUM:
+    - [null, null, null, null, null, "=", 7, 8, 9, "+"]
+    - ["Alt", "Gui", "Shift", "Ctrl", "RA", "*", 4, 5, 6, "-"]
+    - [null, null, null, null, null, 0, 1, 2, 3, "/"]
+    - null
+    - null
+    - null
+    - null
+    - "**"
+    - null
+  FN:
+    - ["Stop", "Prev", "Play", "Next", "🔆", F12, F7, F8, F9, BASE]
+    - ["Alt", "Gui", "Shift", "Ctrl", "🔅", F11, F4, F5, F6, GAME]
+    - ["Mute", "Vol Dn", "Vol Up", null, "BT Clear", F10, F1, F2, F3, null]
+    - "BT 0"
+    - "BT 1"
+    - "BT 2"
+    - null
+    - null
+    - "**"
